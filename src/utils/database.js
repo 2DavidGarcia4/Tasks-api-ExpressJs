@@ -8,7 +8,9 @@ const { dbUrl } = config
 //   dialect: 'postgres'
 // })
 
-const sequelize = new Sequelize(dbUrl)
+const sequelize = new Sequelize(dbUrl, {
+  dialect: 'postgres'
+})
 
 
 module.exports = {
