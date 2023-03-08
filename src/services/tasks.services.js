@@ -63,9 +63,18 @@ const updateTask = async (req, res) => {
   try {
     const { id: userId } = req.user, { id } = req.params
     const { title, description, notificationAt, isCompleted  } = req.body
-    const data = await tasksControllers.updateTask(id, userId, {
+    if(!title && !description && !notificationAt && !isCompleted) return setErrorResposne(res, 'You must provide at least one of the following fields', 400, {
+      title: 'string',
+      description: 'string',
+      notificationAt: 'string',
+      isCompleted: 'string'
+    })
+    const updateData = await tasksControllers.updateTask(id, userId, {
       title, description, notificationAt, isCompleted
     })
+    if(!updateData[0]) return setErrorResposne(res, 'An error occurred while updating')
+    
+    const data = await tasksControllers.getTaskById(id, userId)
     res.status(200).json(data)
 
   } catch (error) {
