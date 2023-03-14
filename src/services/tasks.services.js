@@ -63,11 +63,12 @@ const updateTask = async (req, res) => {
   try {
     const { id: userId } = req.user, { id } = req.params
     const { title, description, notificationAt, isCompleted  } = req.body
-    if(!title && !description && !notificationAt && !isCompleted) return setErrorResposne(res, 'You must provide at least one of the following fields', 400, {
+
+    if(!title && !description && !notificationAt && (typeof isCompleted == 'undefined')) return setErrorResposne(res, 'You must provide at least one of the following fields', 400, {
       title: 'string',
       description: 'string',
       notificationAt: 'string',
-      isCompleted: 'string'
+      isCompleted: 'boolean'
     })
     const updateData = await tasksControllers.updateTask(id, userId, {
       title, description, notificationAt, isCompleted
